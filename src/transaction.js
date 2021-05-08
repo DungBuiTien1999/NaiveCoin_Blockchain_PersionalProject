@@ -269,6 +269,7 @@ const updateUnspentTxOuts = (aTransactions, aUnspentTxOuts) => {
   return resultingUnspentTxOuts;
 };
 
+//when a new block is added to blockchain, this method will be called
 const processTransactions = (aTransactions, aUnspentTxOuts, blockIndex) => {
   if (!validateBlockTransactions(aTransactions, aUnspentTxOuts, blockIndex)) {
     console.log("invalid block transactions");
