@@ -19,6 +19,8 @@
   "dependencies": {
     "crypto-js": "^4.0.0",
     "elliptic": "^6.5.4",
-    "lodash": "^4.17.21"
+    "fs": "0.0.1-security",
+    "lodash": "^4.17.21",
+    "ws": "^7.4.5"
   }
 }
