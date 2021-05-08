@@ -1,7 +1,6 @@
 const WebSocket = require("ws");
-import { write } from "fs";
-import { Server } from "ws";
-import {
+const { Server } = require("ws");
+const {
   addBlockToChain,
   Block,
   getBlockchain,
@@ -9,9 +8,9 @@ import {
   handleReceivedTransaction,
   isValidBlockStructure,
   replaceChain,
-} from "./blockchain";
-import { Transaction } from "./transaction";
-import { getTransactionPool } from "./transactionPool";
+} = require("./blockchain");
+const { Transaction } = require("./transaction");
+const { getTransactionPool } = require("./transactionPool");
 
 const sockets = [];
 

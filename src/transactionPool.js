@@ -1,5 +1,5 @@
-import * as _ from 'lodash';
-import {Transaction, TxIn, UnspentTxOut, validateTransaction} from './transaction';
+const _ = require('lodash');
+const {Transaction, TxIn, UnspentTxOut, validateTransaction} = require('./transaction');
 
 let transactionPool = [];
 

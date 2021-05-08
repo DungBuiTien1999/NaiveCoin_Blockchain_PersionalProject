@@ -1,7 +1,7 @@
-import { ec } from "elliptic";
-import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
+const { ec } = require("elliptic");
+const { existsSync, readFileSync, unlinkSync, writeFileSync } = require("fs");
 const _ = require("lodash");
-import {
+const {
   getPublicKey,
   getTransactionId,
   signTxIn,
@@ -9,7 +9,7 @@ import {
   TxIn,
   TxOut,
   UnspentTxOut,
-} from "./transaction";
+} = require("./transaction");
 
 const EC = new ec("secp256k1");
 
