@@ -1,4 +1,6 @@
-const hexToBinary = (str) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const hexToBinary = (s) => {
     let ret = '';
     const lookupTable = {
         '0': '0000', '1': '0001', '2': '0010', '3': '0011', '4': '0100',
@@ -6,15 +8,14 @@ const hexToBinary = (str) => {
         'a': '1010', 'b': '1011', 'c': '1100', 'd': '1101',
         'e': '1110', 'f': '1111'
     };
-
-    for(let i = 0; i < str.length; i++) {
-        if(lookupTable[str[i]]) {
-            ret +=lookupTable[str[i]];
-        } else {
+    for (let i = 0; i < s.length; i = i + 1) {
+        if (lookupTable[s[i]]) {
+            ret += lookupTable[s[i]];
+        }
+        else {
             return null;
         }
     }
     return ret;
 };
-
-module.exports = {hexToBinary};
+exports.hexToBinary = hexToBinary;

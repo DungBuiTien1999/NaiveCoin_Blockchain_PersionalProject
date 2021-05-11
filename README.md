@@ -12,6 +12,9 @@ npm install
 npm start
 ```
 
+# Generate new address wallet to test
+npm run genekey
+
 ##### Get blockchain
 ```
 curl http://localhost:3001/blocks
