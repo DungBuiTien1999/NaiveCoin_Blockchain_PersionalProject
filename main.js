@@ -3,7 +3,7 @@ const express = require('express');
 const _ = require('lodash');
 const {
     Block, generateNextBlock, generatenextBlockWithTransaction, generateRawNextBlock, getAccountBalance,
-    getBlockchain, getMyUnspentTransactionOutputs, getUnspentTxOuts, sendTransaction
+    getBlockchain, getMyUnspentTransactionOutputs, getUnspentTxOuts, sendTransaction, getLatestBlock
 } =  require('./src/blockchain');
 const {connectToPeers, getSockets, initP2PServer} = require('./src/p2p');
 const {UnspentTxOut} = require('./src/transaction');
@@ -26,6 +26,10 @@ const initHttpServer = (myHttpPort) => {
     app.get('/blocks', (req, res) => {
         res.send(getBlockchain());
     });
+
+    app.get('/latestBlock', (req, res) => {
+        res.send(getLatestBlock());
+    })
 
     app.get('/block/:hash', (req, res) => {
         const block = _.find(getBlockchain(), {'hash': req.params.hash});

@@ -1,5 +1,6 @@
 const { ec } = require("elliptic");
-const { existsSync, readFileSync, unlinkSync, writeFileSync } = require("fs");
+// const { existsSync, readFileSync, unlinkSync, writeFileSync } = require("fs");
+const fse = require('fs-extra');
 const _ = require("lodash");
 const {
   getPublicKey,
@@ -16,7 +17,7 @@ const EC = new ec("secp256k1");
 const privateKeyLocation = process.env.PRIVATE_KEY || "node/wallet/private_key";
 
 const getPrivateFromWallet = () => {
-  const buffer = readFileSync(privateKeyLocation, "utf8");
+  const buffer = fse.readFileSync(privateKeyLocation, "utf8");
   return buffer.toString();
 };
 
@@ -34,12 +35,12 @@ const generatePrivateKey = () => {
 
 const initWallet = () => {
   //let's not override existing private keys
-  if (existsSync(privateKeyLocation)) {
+  if (fse.existsSync(privateKeyLocation)) {
     return;
   }
   const newPrivateKey = generatePrivateKey();
 
-  writeFileSync(privateKeyLocation, newPrivateKey);
+  fse.writeFileSync(privateKeyLocation, newPrivateKey);
   console.log(
     "new wallet with private key created to : %s",
     privateKeyLocation
@@ -47,8 +48,8 @@ const initWallet = () => {
 };
 
 const deleteWallet = () => {
-  if (existsSync(privateKeyLocation)) {
-    unlinkSync(privateKeyLocation);
+  if (fse.existsSync(privateKeyLocation)) {
+    fse.unlinkSync(privateKeyLocation);
   }
 };
 
@@ -131,7 +132,7 @@ const createTransaction = (
     const myUnspenttxOuts = filterTxPoolTxs(myUnspentTxOutsA, txPool);
 
     // filter from unspentOutputs such inputs that are referenced in pool
-    const {includedUnspentTxOuts, leftOverAmount} = findTxOutsForAmount(amount, unspentTxOuts);
+    const {includedUnspentTxOuts, leftOverAmount} = findTxOutsForAmount(amount, myUnspenttxOuts);
 
     const toUnsignedTxIn = (unspentTxOut) => {
         const txIn = new TxIn();

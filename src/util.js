@@ -17,4 +17,4 @@ const hexToBinary = (str) => {
     return ret;
 };
 
-module.exports = hexToBinary;
+module.exports = {hexToBinary};
