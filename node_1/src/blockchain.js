@@ -7,7 +7,7 @@ const transactionPool_1 = require("./transactionPool");
 const util_1 = require("./util");
 const wallet_1 = require("./wallet");
 class Block {
-    constructor(index, hash, previousHash, timestamp,merkleRoot, data, difficulty, nonce) {
+    constructor(index, hash, previousHash, timestamp,merkleRoot, data, difficulty, nonce, miner) {
         this.index = index;
         this.previousHash = previousHash;
         this.timestamp = timestamp;
@@ -16,6 +16,7 @@ class Block {
         this.hash = hash;
         this.difficulty = difficulty;
         this.nonce = nonce;
+        this.miner = miner
     }
 }
 
@@ -27,14 +28,14 @@ const genesisTransaction = {
         }],
     'id': CryptoJS.SHA256('' + 0 
              + '04d6362b2ddcf8798dd009ee7743ae0a4e46506ca5076f1f5193b88a9a7ceb4f41e19422b456b092af52c16a7089c600acbe80e7df19ca8ec6f8c1d48c00578d60'
-             + 50).toString()
+             + 50).toString()   
 };
 const getMerkleRoot = (tx)=>{
     const tree = merkle('sha256').sync([JSON.stringify(tx)])
 	const merkleRoot = tree.root() || '0'.repeat(64)
     return merkleRoot
 }
-const genesisBlock = new Block(0, '91a73664bc84c0baa1fc75ea6e4aa6d1d20c5df664c724e3159aefc2e1186627', '', 1465154705,getMerkleRoot(genesisTransaction), [genesisTransaction], 0, 0);
+const genesisBlock = new Block(0, '91a73664bc84c0baa1fc75ea6e4aa6d1d20c5df664c724e3159aefc2e1186627', '', 1465154705,getMerkleRoot(genesisTransaction), [genesisTransaction], 0, 0,"04d6362b2ddcf8798dd009ee7743ae0a4e46506ca5076f1f5193b88a9a7ceb4f41e19422b456b092af52c16a7089c600acbe80e7df19ca8ec6f8c1d48c00578d60" );
 let blockchain = [genesisBlock];
 // the unspent txOut of genesis block is set to unspentTxOuts on startup
 let unspentTxOuts = transaction_1.processTransactions(blockchain[0].data, [], 0);
@@ -92,7 +93,8 @@ const generateRawNextBlock = (blockData) => {
     const nextIndex = previousBlock.index + 1;
     const nextTimestamp = getCurrentTimestamp();
     const merkleRoot = getMerkleRoot(blockData);
-    const newBlock = findBlock(nextIndex, previousBlock.hash, nextTimestamp,merkleRoot, blockData, difficulty);
+    const miner = wallet_1.getPublicFromWallet();
+    const newBlock = findBlock(nextIndex, previousBlock.hash, nextTimestamp,merkleRoot, blockData, difficulty,miner);
     if (addBlockToChain(newBlock)) {
         p2p_1.broadcastLatest();
         return newBlock;
@@ -101,6 +103,7 @@ const generateRawNextBlock = (blockData) => {
         return null;
     }
 };
+const a = 100
 
 
 // coinbaseTx,TX 담아 nextBlock 생성하는 함수에 인자로 넣음
@@ -126,12 +129,12 @@ const generatenextBlockWithTransaction = (receiverAddress, amount) => {
 
 
 //
-const findBlock = (index, previousHash, timestamp,merkleRoot, data, difficulty) => {
+const findBlock = (index, previousHash, timestamp,merkleRoot, data, difficulty,miner) => {
     let nonce = 0;
     while (true) {
         const hash = calculateHash(index, previousHash, timestamp,merkleRoot, data, difficulty, nonce);
         if (hashMatchesDifficulty(hash, difficulty)) {
-            return new Block(index, hash, previousHash, timestamp,merkleRoot, data, difficulty, nonce);
+            return new Block(index, hash, previousHash, timestamp,merkleRoot, data, difficulty, nonce,miner);
         }
         nonce++;
     }

@@ -8,6 +8,9 @@ const getTransactionPool = () => {
 };
 
 const addToTransactionPool = (tx, unspentTxOuts) => {
+    // console.log("***** tx ******* \n" , tx)
+    // console.log("***** unspentTxOuts ******* \n" , unspentTxOuts)
+    // console.log("***** transactionPool ******* \n" , transactionPool[0])
     if (!transaction_1.validateTransaction(tx, unspentTxOuts)) {
         throw Error('Trying to add invalid tx to pool');
     }
