@@ -29,7 +29,7 @@ export const BlockList = (props) => {
 
   const getBlockInfo = async()=>{
       await axios.get('http://localhost:3001/blocks').then(res=>{
-          console.log("마이너 : ", res.data.miner)  
+        console.log("마이너 : ", res.data[1].miner)  
           setBlockInfo(res.data)
       }).catch(()=>{console.log(" 서버가 열려있지 않습니다.")})
   }
@@ -37,7 +37,7 @@ export const BlockList = (props) => {
   useEffect(() => {
     const getBlockInfo = async()=>{
         await axios.get('http://localhost:3001/blocks').then(res=>{
-            console.log("마이너 : ", res.data.miner)  
+          console.log("마이너2 : ", res.data[1].miner)  
             setBlockInfo(res.data)
         }).catch(()=>{console.log(" 서버가 열려있지 않습니다.")})
     }
@@ -47,18 +47,14 @@ export const BlockList = (props) => {
 
   useEffect(() => {
     const nodeCheck = async()=>{
-          await axios.get('http://localhost:3001/miner').then(res=>{
-          console.log(res.data)  
-              setNode_1(res.data)   
+          await axios.get('http://localhost:3001/address').then(res=>{
+            setNode_1(res.data.address)   
           }).catch(()=>{console.log(" 서버가 열려있지 않습니다.")})
-          await axios.get('http://localhost:3002/miner').then(res=>{
-              console.log(res.data)  
-              setNode_2(res.data)
-              
+          await axios.get('http://localhost:3002/address').then(res=>{
+            setNode_2(res.data.address)  
           }).catch(()=>console.log("요청하는 서버가 열려있지 않습니다."))
-          await axios.get('http://localhost:3003/miner').then(res=>{
-              console.log(res.data)  
-              setNode_3(res.data)
+          await axios.get('http://localhost:3003/address').then(res=>{
+            setNode_3(res.data.address)
           }).catch(()=>console.log("요청하는 서버가 열려있지 않습니다."))
     }
     nodeCheck()
