@@ -128,7 +128,7 @@ export const DashboardSidebar = (props) => {
           }}
         >
           <Typography color="neutral.100" variant="subtitle2">
-            팀프로젝트 : 이동녘 김동욱
+            팀프로젝트 : 김동욱 이동녘
           </Typography>
           <Typography color="neutral.500" variant="body2">
             2주 블록체인 첫프로젝트

@@ -9,8 +9,8 @@ const blockchain_1 = require("./src/blockchain");
 const p2p_1 = require("./src/p2p");
 const transactionPool_1 = require("./src/transactionPool");
 const wallet_1 = require("./src/wallet");
-const httpPort = parseInt(process.env.HTTP_PORT) || 3001;
-const p2pPort = parseInt(process.env.P2P_PORT) || 6001;
+const httpPort = parseInt(process.env.HTTP_PORT) || 3002;
+const p2pPort = parseInt(process.env.P2P_PORT) || 6002;
 const initHttpServer = (myHttpPort) => {
     const app = express();
     app.use(cors());
@@ -33,6 +33,14 @@ const initHttpServer = (myHttpPort) => {
             hash: req.params.hash,
         });
         res.send(block);
+    });
+    //마이너 확인
+    app.get("/miner", (req, res) => {
+        res.send(getPublicKeyFromWallet().toString());
+    });
+    //참여노드 확인
+    app.get("/chenkOn", (req, res) => {
+        res.send("a");
     });
     app.get("/transaction/:id", (req, res) => {
         const tx = _(blockchain_1.getBlockchain())
@@ -95,14 +103,6 @@ const initHttpServer = (myHttpPort) => {
             console.log(e.message);
             res.status(400).send(e.message);
         }
-    });
-    //마이너 확인
-    app.get("/miner", (req, res) => {
-        res.send(getPublicKeyFromWallet().toString());
-    });
-    //참여노드 확인
-    app.get("/chenkOn", (req, res) => {
-        res.send("a");
     });
     app.post("/sendTransaction", (req, res) => {
         try {
